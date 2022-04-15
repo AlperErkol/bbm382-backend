@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
+
 @Entity
 @Data
 @Table(name = "posts")
@@ -20,13 +21,25 @@ public class Post {
     private BigInteger postId;
 
     @Column(name = "post_type")
-    private EPost postType;
+    private String postType;
 
     @Column(name = "user_id")
     private BigInteger owner;
 
     @Column(name = "likes")
     private int likes;
+
+    @Column(name = "post_content")
+    private String postContent;
+
+    @Column(name = "post_source")
+    private String postSource;
+
+    @Column(name = "post_event_start_date")
+    private Date postEventStartDate;
+
+    @Column(name = "post_event_type")
+    private String postEventType;
 
     @Column(name = "comments")
     @OneToMany

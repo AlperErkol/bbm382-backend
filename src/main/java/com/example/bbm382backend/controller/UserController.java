@@ -5,6 +5,7 @@ import com.example.bbm382backend.model.User;
 import com.example.bbm382backend.service.abstracts.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @RestController
@@ -18,16 +19,30 @@ public class UserController {
         this.userService = userService;
     }
 
+    //GET ALL USERS
     @GetMapping("/all")
     public List<User> getAllUsers(){
         return userService.findAll();
     }
 
+    //SIGN UP
     @PostMapping("/user")
-    public User signIn(@RequestBody User user){
-        return userService.signInUser(user);
+    public User signUp(@RequestBody User user){
+        return userService.signUpUser(user);
     }
 
+    //SIGN IN
+    @PostMapping("/login")
+    public User signIn(@RequestBody User user){
+        return userService.logInUser(user);
+    }
+
+    @GetMapping("/user/{userId}")
+    public User findUserById(@PathVariable BigInteger userId){
+        return userService.findUserById(userId);
+    }
+
+    //TEST
     @GetMapping("/test")
     public boolean test(){
         return true;

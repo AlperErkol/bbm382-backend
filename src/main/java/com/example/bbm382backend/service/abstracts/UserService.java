@@ -10,9 +10,10 @@ import java.util.List;
 public interface UserService {
 
     List<User> findAll();
-    User signInUser(User user);
+    User signUpUser(User user);
     User updateUser(User user);
-    boolean logInUser(User user);
+    User logInUser(User user);
+    User findUserById(BigInteger userId);
 
 
 }

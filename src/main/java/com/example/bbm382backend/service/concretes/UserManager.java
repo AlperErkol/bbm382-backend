@@ -25,8 +25,16 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public User signInUser(User user) {
-        return userRepository.save(user);
+    public User signUpUser(User user) {
+
+        //checks if there is a given mail.
+        User isUser = findByEmail(user.getEmail());
+        if(isUser==null){
+            return userRepository.save(user);
+        }else{
+            return null;
+        }
+
     }
 
     @Override
@@ -35,14 +43,27 @@ public class UserManager implements UserService {
     }
 
     @Override
-    public boolean logInUser(User user) {
-        return false;
+    public User logInUser(User user) {
+
+        //checks if there is a given user.
+        User isUser = findByEmail(user.getEmail());
+
+        if(isUser!=null){
+
+            //checks if password matches.
+            if(user.getPassword().equals(isUser.getPassword())){
+                return isUser;
+            }
+            return null;
+        }
+        return null;
     }
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
+    @Override
     public User findUserById(BigInteger userId){
         return userRepository.findById(userId).get();
     }

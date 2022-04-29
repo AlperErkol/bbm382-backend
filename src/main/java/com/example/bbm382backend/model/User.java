@@ -42,12 +42,12 @@ public class User {
     @Column(name = "company")
     private String company;
 
-    @Column(name = "access_level")
-    private int accessLevel;
+    @Column(name = "user_type")
+    private int userType;
 
-    @Column(name = "posts")
-    @OneToMany
-    private List<Post> postList;
+//    @Column(name = "posts")
+//    @OneToMany
+//    private List<Post> postList;
 
     @CreationTimestamp
     @Column(name = "creation_date")

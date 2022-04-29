@@ -2,6 +2,7 @@ package com.example.bbm382backend.service.concretes;
 
 import com.example.bbm382backend.model.User;
 import com.example.bbm382backend.repository.UserRepository;
+import com.example.bbm382backend.security.PasswordConfig;
 import com.example.bbm382backend.service.abstracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +14,12 @@ import java.util.List;
 public class UserManager implements UserService {
 
     private UserRepository userRepository;
+    private PasswordConfig passwordConfig;
 
     @Autowired
-    public UserManager(UserRepository userRepository){
+    public UserManager(UserRepository userRepository, PasswordConfig passwordConfig){
         this.userRepository = userRepository;
+        this.passwordConfig = passwordConfig;
     }
 
     @Override
@@ -30,6 +33,8 @@ public class UserManager implements UserService {
         //checks if there is a given mail.
         User isUser = findByEmail(user.getEmail());
         if(isUser==null){
+            String bcryptedPassword = this.passwordConfig.passwordEncoder().encode(user.getPassword());
+            user.setPassword(bcryptedPassword);
             return userRepository.save(user);
         }else{
             return null;
@@ -48,15 +53,19 @@ public class UserManager implements UserService {
         //checks if there is a given user.
         User isUser = findByEmail(user.getEmail());
 
-        if(isUser!=null){
-
-            //checks if password matches.
-            if(user.getPassword().equals(isUser.getPassword())){
-                return isUser;
-            }
+        if(isUser==null){
             return null;
+        }else{
+
+            boolean isPasswordMatches = this.passwordConfig.passwordEncoder().matches(user.getPassword(),isUser.getPassword());
+
+            if(isPasswordMatches){
+                return isUser;
+            }else{
+                return null;
+            }
         }
-        return null;
+
     }
 
     public User findByEmail(String email) {

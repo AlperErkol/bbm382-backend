@@ -42,6 +42,11 @@ public class UserController {
         return userService.findUserById(userId);
     }
 
+    @GetMapping("/status")
+    public List<User> findUsersByUserStatus(){
+        return userService.findUserByStatus();
+    }
+
     //TEST
     @GetMapping("/test")
     public boolean test(){

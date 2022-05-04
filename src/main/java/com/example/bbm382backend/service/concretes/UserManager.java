@@ -77,6 +77,10 @@ public class UserManager implements UserService {
         return userRepository.findById(userId).get();
     }
 
+    public List<User> findUserByStatus() {
+        return userRepository.findUserByStatus();
+    }
+
     public User deleteUser(BigInteger userId) {
         User user = findUserById(userId);
         userRepository.deleteById(userId);

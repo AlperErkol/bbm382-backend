@@ -43,7 +43,10 @@ public class User {
     private String company;
 
     @Column(name = "user_type")
-    private int userType;
+    private String userType;
+
+    @Column(name = "user_status")
+    private boolean userStatus;
 
 //    @Column(name = "posts")
 //    @OneToMany

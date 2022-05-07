@@ -1,9 +1,12 @@
 package com.example.bbm382backend.service.concretes;
 
 import com.example.bbm382backend.model.User;
+import com.example.bbm382backend.model.UserSession;
+import com.example.bbm382backend.repository.SessionRepository;
 import com.example.bbm382backend.repository.UserRepository;
 import com.example.bbm382backend.security.PasswordConfig;
 import com.example.bbm382backend.service.abstracts.UserService;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +18,13 @@ public class UserManager implements UserService {
 
     private UserRepository userRepository;
     private PasswordConfig passwordConfig;
+    private SessionRepository sessionRepository;
 
     @Autowired
-    public UserManager(UserRepository userRepository, PasswordConfig passwordConfig){
+    public UserManager(UserRepository userRepository, PasswordConfig passwordConfig, SessionRepository sessionRepository){
         this.userRepository = userRepository;
         this.passwordConfig = passwordConfig;
+        this.sessionRepository = sessionRepository;
     }
 
     @Override
@@ -60,6 +65,14 @@ public class UserManager implements UserService {
             boolean isPasswordMatches = this.passwordConfig.passwordEncoder().matches(user.getPassword(),isUser.getPassword());
 
             if(isPasswordMatches){
+                String userId = String.valueOf(user.getUserId());
+                String sessionUid = this.passwordConfig.passwordEncoder().encode(userId);
+                System.out.println("Alper");
+                UserSession userSession = new UserSession();
+                userSession.setUserId(user.getUserId());
+                userSession.setSessionUid(sessionUid);
+
+                sessionRepository.save(userSession);
                 return isUser;
             }else{
                 return null;

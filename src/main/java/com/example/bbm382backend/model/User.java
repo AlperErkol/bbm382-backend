@@ -57,5 +57,11 @@ public class User {
     private Date creationDate;
 
 
+    public boolean isUserStatus() {
+        return userStatus;
+    }
 
+    public void setUserStatus(boolean userStatus) {
+        this.userStatus = userStatus;
+    }
 }

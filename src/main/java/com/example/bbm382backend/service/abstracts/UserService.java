@@ -17,4 +17,7 @@ public interface UserService {
     User findUserById(BigInteger userId);
     List<User> findUserByStatus();
 
+    Boolean acceptPendingRequest(BigInteger userId);
+    Boolean declinePendingRequest(BigInteger userId);
+
 }

@@ -58,22 +58,29 @@ public class UserManager implements UserService {
         //checks if there is a given user.
         User isUser = findByEmail(user.getEmail());
 
+
+
         if(isUser==null){
             return null;
         }else{
 
             boolean isPasswordMatches = this.passwordConfig.passwordEncoder().matches(user.getPassword(),isUser.getPassword());
+            boolean isUserActive = isUser.isUserStatus();
 
-            if(isPasswordMatches){
+
+            if(isPasswordMatches && isUserActive){
                 String userId = String.valueOf(user.getUserId());
                 String sessionUid = this.passwordConfig.passwordEncoder().encode(userId);
-                System.out.println("Alper");
                 UserSession userSession = new UserSession();
-                userSession.setUserId(user.getUserId());
-                userSession.setSessionUid(sessionUid);
 
-                sessionRepository.save(userSession);
+                if(isUser.getUserId() != null){
+                    userSession.setUserId(isUser.getUserId());
+                    userSession.setSessionUid(sessionUid);
+                    sessionRepository.save(userSession);
+                }
+
                 return isUser;
+
             }else{
                 return null;
             }
@@ -92,6 +99,23 @@ public class UserManager implements UserService {
 
     public List<User> findUserByStatus() {
         return userRepository.findUserByStatus();
+    }
+
+    @Override
+    public Boolean acceptPendingRequest(BigInteger userId) {
+
+        User user = userRepository.findById(userId).get();
+        user.setUserStatus(true);
+        userRepository.save(user);
+        return true;
+
+    }
+
+    @Override
+    public Boolean declinePendingRequest(BigInteger userId) {
+        User user = userRepository.findById(userId).get();
+        userRepository.delete(user);
+        return true;
     }
 
     public User deleteUser(BigInteger userId) {

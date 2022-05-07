@@ -47,6 +47,18 @@ public class UserController {
         return userService.findUserByStatus();
     }
 
+
+    @PostMapping("/request/accept/{userId}")
+    public boolean acceptPendingRequest(@PathVariable BigInteger userId) {
+        return userService.acceptPendingRequest(userId);
+    }
+
+
+    @PostMapping("/request/decline/{userId}")
+    public boolean declinePendingRequest(@PathVariable BigInteger userId){
+        return userService.declinePendingRequest(userId);
+    }
+
     //TEST
     @GetMapping("/test")
     public boolean test(){

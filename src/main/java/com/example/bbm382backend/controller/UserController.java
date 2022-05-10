@@ -37,7 +37,7 @@ public class UserController {
         return userService.logInUser(user);
     }
 
-    @GetMapping("/user/{userId}")
+    @PostMapping("/user/{userId}")
     public User findUserById(@PathVariable BigInteger userId){
         return userService.findUserById(userId);
     }

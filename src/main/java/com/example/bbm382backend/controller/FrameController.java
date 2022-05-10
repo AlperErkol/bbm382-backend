@@ -1,9 +1,14 @@
 package com.example.bbm382backend.controller;
 
 import com.example.bbm382backend.model.Frame;
+import com.example.bbm382backend.model.User;
 import com.example.bbm382backend.service.abstracts.FrameService;
+import com.example.bbm382backend.utils.FileUploadUtil;
+import com.example.bbm382backend.utils.UniqueFilename;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -24,8 +29,21 @@ public class FrameController {
     }
 
     @PostMapping("/frame")
-    public Frame save(@RequestBody Frame frame){
-        return frameService.save(frame);
+    public String uploadToDB(@RequestParam("file") MultipartFile file) throws IOException {
+        String filename = file.getOriginalFilename();
+        String fileExtension = FileUploadUtil.getExtension(filename);
+        filename = filename.replace(fileExtension, "");
+
+        UniqueFilename uniqueFilename = new UniqueFilename();
+
+        String uFilename = uniqueFilename.makeItUnique(filename);
+        uFilename+=fileExtension;
+
+        String uploadDir = "user-photos";
+        FileUploadUtil.saveFile(uploadDir, uFilename, file);
+
+        //user.setUserImage(uFilename);
+        return uFilename;
     }
 
     // Testing Controller

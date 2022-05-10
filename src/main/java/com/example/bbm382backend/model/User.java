@@ -56,6 +56,9 @@ public class User {
     @Column(name = "creation_date")
     private Date creationDate;
 
+    @Column(name = "user_image")
+    private String userImage;
+
 
     public boolean isUserStatus() {
         return userStatus;

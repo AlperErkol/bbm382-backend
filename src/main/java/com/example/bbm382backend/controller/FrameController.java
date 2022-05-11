@@ -1,7 +1,6 @@
 package com.example.bbm382backend.controller;
 
 import com.example.bbm382backend.model.Frame;
-import com.example.bbm382backend.model.User;
 import com.example.bbm382backend.service.abstracts.FrameService;
 import com.example.bbm382backend.utils.FileUploadUtil;
 import com.example.bbm382backend.utils.UniqueFilename;

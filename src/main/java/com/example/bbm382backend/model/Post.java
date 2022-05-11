@@ -41,9 +41,9 @@ public class Post {
     @Column(name = "post_event_type")
     private String postEventType;
 
-//    @Column(name = "comments")
-//    @OneToMany
-//    private List<User> commentList;
+    @Column(name = "comments")
+    @OneToMany
+    private List<Comment> commentList;
 
     @CreationTimestamp
     @Column(name = "creation_date")

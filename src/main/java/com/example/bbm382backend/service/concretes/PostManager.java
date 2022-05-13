@@ -14,10 +14,14 @@ import java.util.List;
 public class PostManager implements PostService {
 
     private PostRepository postRepository;
+    private UserManager userManager;
+    private NotificationManager notificationManager;
 
     @Autowired
-    public PostManager(PostRepository postRepository){
+    public PostManager(PostRepository postRepository, UserManager userManager, NotificationManager notificationManager){
         this.postRepository = postRepository;
+        this.userManager = userManager;
+        this.notificationManager = notificationManager;
     }
 
     @Override
@@ -44,7 +48,26 @@ public class PostManager implements PostService {
 
     @Override
     public Post createPost(Post post) {
-        return postRepository.save(post);
+
+        Post newPost = postRepository.save(post);
+
+        if(post.getPostType().equalsIgnoreCase("announcement")){
+
+            List<User> userList = userManager.findAll();
+            int userListSize = userList.size();
+
+            for(int i = 0;i<userListSize;i++){
+                Notification notification = new Notification();
+                BigInteger userId = userList.get(i).getUserId();
+                notification.setOwner(userId);
+                notification.setNotificationPostId(newPost.getPostId());
+                notification.setIsRead(false);
+                notificationManager.save(notification);
+            }
+        }
+
+        return newPost;
+
     }
 
     @Override

@@ -59,14 +59,14 @@ public class UserController {
         return userService.declinePendingRequest(userId);
     }
 
+    @GetMapping("/active")
+    public List<User> findActiveUser() {
+        return userService.findActiveUsers();
+    }
+
     //TEST
     @GetMapping("/test")
     public boolean test(){
         return true;
     }
-
-
-
-
-
 }

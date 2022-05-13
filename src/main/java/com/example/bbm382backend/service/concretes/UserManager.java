@@ -102,6 +102,11 @@ public class UserManager implements UserService {
     }
 
     @Override
+    public List<User> findActiveUsers() {
+        return userRepository.findActiveUser();
+    }
+
+    @Override
     public Boolean acceptPendingRequest(BigInteger userId) {
 
         User user = userRepository.findById(userId).get();

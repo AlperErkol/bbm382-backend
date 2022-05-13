@@ -17,6 +17,12 @@ public interface UserRepository extends JpaRepository<User, BigInteger> {
     )
     List<User> findUserByStatus();
 
+    @Query(
+            value = "select * from users u where u.user_status = true",
+            nativeQuery = true
+    )
+    List<User> findActiveUser();
+
 
 
 }

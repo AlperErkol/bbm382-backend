@@ -48,10 +48,6 @@ public class User {
     @Column(name = "user_status")
     private boolean userStatus;
 
-//    @Column(name = "posts")
-//    @OneToMany
-//    private List<Post> postList;
-
     @CreationTimestamp
     @Column(name = "creation_date")
     private Date creationDate;

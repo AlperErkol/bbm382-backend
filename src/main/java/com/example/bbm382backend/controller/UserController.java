@@ -1,6 +1,7 @@
 package com.example.bbm382backend.controller;
 
 
+import com.example.bbm382backend.model.PasswordC;
 import com.example.bbm382backend.model.User;
 import com.example.bbm382backend.service.abstracts.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -62,6 +63,17 @@ public class UserController {
     @GetMapping("/active")
     public List<User> findActiveUser() {
         return userService.findActiveUsers();
+    }
+
+    @PostMapping("/updateUser")
+    public User updateUser(@RequestBody User user){
+        return userService.updateUser(user);
+    }
+
+
+    @PostMapping("/updatePassword")
+    public Boolean changePassword(@RequestBody PasswordC passwordC){
+        return userService.changePassword(passwordC);
     }
 
     //TEST

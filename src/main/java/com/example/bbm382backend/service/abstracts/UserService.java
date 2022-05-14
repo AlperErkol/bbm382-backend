@@ -1,5 +1,6 @@
 package com.example.bbm382backend.service.abstracts;
 
+import com.example.bbm382backend.model.PasswordC;
 import com.example.bbm382backend.model.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,9 @@ public interface UserService {
     User findUserById(BigInteger userId);
     List<User> findUserByStatus();
     List<User> findActiveUsers();
-
     Boolean acceptPendingRequest(BigInteger userId);
     Boolean declinePendingRequest(BigInteger userId);
+    Boolean changePassword(PasswordC passwordC);
+
 
 }

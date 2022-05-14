@@ -4,10 +4,12 @@ import com.example.bbm382backend.model.Frame;
 import com.example.bbm382backend.service.abstracts.FrameService;
 import com.example.bbm382backend.utils.FileUploadUtil;
 import com.example.bbm382backend.utils.UniqueFilename;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.List;
 
 @RestController
@@ -27,22 +29,21 @@ public class FrameController {
         return frameService.findAll();
     }
 
+    @PostMapping("/frame/{userId}")
+    public Boolean uploadProfilePhoto(@RequestParam("file") MultipartFile file, @PathVariable BigInteger userId) throws IOException {
+        return frameService.saveProfilePhoto(file, userId);
+    }
+
     @PostMapping("/frame")
-    public String uploadToDB(@RequestParam("file") MultipartFile file) throws IOException {
-        String filename = file.getOriginalFilename();
-        String fileExtension = FileUploadUtil.getExtension(filename);
-        filename = filename.replace(fileExtension, "");
+    public String uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+        return frameService.uploadFile(file);
+    }
 
-        UniqueFilename uniqueFilename = new UniqueFilename();
+    @PostMapping("/frameById/{postId}")
+    public List<Frame> findFrameByPostId(@PathVariable BigInteger postId){
 
-        String uFilename = uniqueFilename.makeItUnique(filename);
-        uFilename+=fileExtension;
+        return this.frameService.findByPostId(postId);
 
-        String uploadDir = "user-photos";
-        FileUploadUtil.saveFile(uploadDir, uFilename, file);
-
-        //user.setUserImage(uFilename);
-        return uFilename;
     }
 
     // Testing Controller

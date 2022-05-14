@@ -1,5 +1,6 @@
 package com.example.bbm382backend.service.concretes;
 
+import com.example.bbm382backend.model.PasswordC;
 import com.example.bbm382backend.model.User;
 import com.example.bbm382backend.model.UserSession;
 import com.example.bbm382backend.repository.SessionRepository;
@@ -7,6 +8,7 @@ import com.example.bbm382backend.repository.UserRepository;
 import com.example.bbm382backend.security.PasswordConfig;
 import com.example.bbm382backend.service.abstracts.UserService;
 import org.hibernate.Session;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +22,14 @@ public class UserManager implements UserService {
     private PasswordConfig passwordConfig;
     private SessionRepository sessionRepository;
 
+    private ModelMapper mapper;
+
     @Autowired
-    public UserManager(UserRepository userRepository, PasswordConfig passwordConfig, SessionRepository sessionRepository){
+    public UserManager(UserRepository userRepository, PasswordConfig passwordConfig, SessionRepository sessionRepository, ModelMapper mapper){
         this.userRepository = userRepository;
         this.passwordConfig = passwordConfig;
         this.sessionRepository = sessionRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -49,7 +54,28 @@ public class UserManager implements UserService {
 
     @Override
     public User updateUser(User user) {
-        return userRepository.save(user);
+
+        User u = findUserById(user.getUserId());
+        if(user.getEmail() != null){
+            u.setEmail(user.getEmail());
+        }
+        if(user.getUserType() != null){
+            u.setUserType(user.getUserType());
+        }
+        if(user.getFirstName() != null){
+            u.setFirstName(user.getFirstName());
+        }
+        if(user.getLastName() != null){
+            u.setLastName(user.getLastName());
+        }
+        if(user.getCompany() != null){
+            u.setCompany(user.getCompany());
+        }
+        if(user.getPosition() != null){
+            u.setPosition(user.getPosition());
+        }
+
+        return this.userRepository.save(u);
     }
 
     @Override
@@ -121,6 +147,35 @@ public class UserManager implements UserService {
         User user = userRepository.findById(userId).get();
         userRepository.delete(user);
         return true;
+    }
+
+    @Override
+    public Boolean changePassword(PasswordC passwordC) {
+
+        User u = findUserById(passwordC.getUserId());
+        String oldPassword = passwordC.getOldPassword();
+        boolean isMatch = this.passwordConfig.passwordEncoder().matches(oldPassword,u.getPassword());
+        if(isMatch)
+        {
+            if(passwordC.getNewPassword().equals(passwordC.getNewPasswordConfirm()))
+            {
+                String bcryptedPassword = this.passwordConfig.passwordEncoder().encode(passwordC.getNewPassword());
+                u.setPassword(bcryptedPassword);
+                System.out.println("Buradayım....");
+
+                userRepository.save(u);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+
     }
 
     public User deleteUser(BigInteger userId) {

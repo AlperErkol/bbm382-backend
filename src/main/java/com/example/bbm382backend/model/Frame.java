@@ -23,9 +23,6 @@ public class Frame {
     @Column(name = "post_id")
     private BigInteger postId;
 
-    @Column(name = "user_id")
-    private BigInteger userId;
-
     @Column(name = "frame_path")
     private String framePath;
 

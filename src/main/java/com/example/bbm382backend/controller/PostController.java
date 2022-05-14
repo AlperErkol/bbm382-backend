@@ -43,4 +43,9 @@ public class PostController {
     public String test(){
         return "i'm working on post controller";
     }
+
+    @PostMapping("/post/{postId}")
+    public Post findPostByPostId(@PathVariable BigInteger postId) {
+        return postService.findPostByPostId(postId);
+    }
 }

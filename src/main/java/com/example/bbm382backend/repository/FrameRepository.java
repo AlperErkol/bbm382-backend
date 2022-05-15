@@ -7,8 +7,5 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface FrameRepository extends JpaRepository<Frame, BigInteger> {
-
     List<Frame> findByPostId(BigInteger postId);
-
-
 }

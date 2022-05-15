@@ -7,9 +7,5 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification, BigInteger> {
-
-
     List<Notification> findAllByOwner(BigInteger owner);
-
-
 }

@@ -157,13 +157,14 @@ public class UserManager implements UserService {
         boolean isMatch = this.passwordConfig.passwordEncoder().matches(oldPassword,u.getPassword());
         if(isMatch)
         {
-            if(passwordC.getNewPassword().equals(passwordC.getNewPasswordConfirm()))
+            if(passwordC.getNewPassword().equals(passwordC.getNewPasswordConfirm()) && !passwordC.getNewPassword().equals(passwordC.getOldPassword()))
             {
                 String bcryptedPassword = this.passwordConfig.passwordEncoder().encode(passwordC.getNewPassword());
+
                 u.setPassword(bcryptedPassword);
-                System.out.println("Buradayım....");
 
                 userRepository.save(u);
+
                 return true;
             }
             else

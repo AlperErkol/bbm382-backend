@@ -7,7 +7,5 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, BigInteger> {
-
     List<Comment> findByBelongsTo(BigInteger belongsTo);
-
 }
